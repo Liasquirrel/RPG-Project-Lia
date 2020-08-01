@@ -5,30 +5,64 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     //All the stats
-    public int level;
+    public int level=1;
     public int hp, mHp;
-    public int str, strMod;
-    public int dex, dexMod;
-    public int con, conMod;
-    public int intel, intelMod;
-    public int wis, wisMod;
-    public int cha, chaMod;
-    public int hitDie, hitDieSize;
+    public int str=10, strMod;
+    public int dex=10, dexMod;
+    public int con=10, conMod;
+    public int intel=10, intelMod;
+    public int wis=10, wisMod;
+    public int cha=10, chaMod;
+    public int hitDie=8, hitDieSize;
+
+    public bool hostile;
+
 
     //Written things
-    public string race, unitName, job="Fighter";
+    public string race="Human", unitName, job="Fighter";
 
     //constructors
 
     public Unit() { }
 
+    //For quickly making baseline stat npc
+    public Unit(string unitName, bool hostile)
+    {
+        this.unitName = unitName;
+        this.hostile = hostile;
+        getClassStats();
+        calcMods();
+        calcMHp();
+        this.hp = mHp;
+    }
+
+    //When we need full details. Mostly partymembers or specific enemies
+    public Unit(int level, string unitName, int str, int dex, int con, int intel, int wis, int cha, string race, string job, bool hostile) {
+        this.level = level;
+        this.race = race;
+        this.job = job;
+        this.unitName = unitName;
+        this.str = str;
+        this.dex = dex;
+        this.con = con;
+        this.wis = wis;
+        this.intel = intel;
+        this.cha = cha;
+        this.hitDie = level;
+        this.hostile = hostile;
+        getClassStats();
+        calcMods();
+        calcMHp();
+        this.hp = mHp;
+    }
+
+    //copy function
     public Unit(Unit unit)
     {
         this.level = unit.level;
         this.race = unit.race;
         this.job = unit.job;
         this.unitName = unit.unitName;
-        this.hp = unit.hp;
         this.str = unit.str;
         this.dex = unit.dex;
         this.con = unit.con;
@@ -36,16 +70,19 @@ public class Unit : MonoBehaviour
         this.intel = unit.intel;
         this.cha = unit.cha;
         this.hitDie = level;
+        this.hostile = unit.hostile;
         getClassStats();
         calcMods();
         calcMHp();
+        this.hp = mHp;
 
     }
 
     //Ability score mods
     public void calcMods()
     {
-        strMod = (str - 10) / 2);
+        //iunno if I need to floor it yet, will change when I find out
+        strMod = (str - 10) / 2;
         dexMod = (int)Mathf.Floor((dex - 10) / 2);
         conMod = (int)Mathf.Floor((con - 10) / 2);
         intelMod = (int)Mathf.Floor((intel - 10) / 2);
