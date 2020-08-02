@@ -5,10 +5,12 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 
-    public float speed = 100.0f;
+    public float speed = 20.0f;
     Rigidbody2D rigidbody2d;
     public Unit[] team = new Unit[5];
 
+    bool mvHoz;
+    bool mvVer;
 
     Animator animator;
     Vector2 lookDirection = new Vector2(1, 0);
@@ -27,11 +29,26 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+        float horizontal = 0;
+        float vertical = 0;
 
-
-
+        if (Input.GetAxis("Vertical") != 0 && Input.GetAxis("Horizontal") != 0)
+        {
+            if (mvHoz)
+            {
+                vertical = Input.GetAxis("Vertical");
+            }
+            else if (mvVer)
+            {
+                horizontal = Input.GetAxis("Horizontal");
+            }
+        } else
+        {
+            mvHoz = Input.GetAxis("Horizontal") != 0;
+            horizontal = Input.GetAxis("Horizontal");
+            mvVer = Input.GetAxis("Vertical") != 0;
+            vertical = Input.GetAxis("Vertical");
+        }
         Vector2 move = new Vector2(horizontal, vertical);
 
         if (!Mathf.Approximately(move.x, 0.0f) || !Mathf.Approximately(move.y, 0.0f))
